@@ -6,3 +6,9 @@
 ReactQuill{
     height: 5000px;
 }
+
+#editor-container {
+    height: 375px;
+    color: 211,211,211
+  }
+  

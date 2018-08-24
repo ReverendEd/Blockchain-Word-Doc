@@ -10,6 +10,13 @@ const nodeAddress = uuid().split('-').join('');
 
 const bitcoin = new Blockchain();
 
+const knownNodes = [
+    "http://localhost:3002",
+    "http://localhost:3003",
+    "http://localhost:3004",
+    "http://localhost:3005"
+]
+
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({extended: false}));
 
@@ -251,7 +258,7 @@ app.get('/consensus', function(req, res){
             });
         }
         else if (newLongestChain && bitcoin.isChainValid(newLongestChain)) {
-            bitcoin.chain = newLongestChain;
+            bitcoin.chain = newLongestChain.chain;
             bitcoin.pendingTransactions = newPendingTransactions;
             res.json({
                 note: 'This chain has been replaced.',
@@ -311,9 +318,29 @@ app.get('/block-explorer', function(req, res){
     res.sendFile('./block-explorer/index.html', {root: __dirname})
 })
 
+// app.get('/port', (req, res)=>{
+//     res.send(port)
+// })
 
-
+app.get('/on-load', function(req, res){
+    const regNodesPromises = [];
+    knownNodes.forEach(node=>{
+        const requestOptions = {
+            uri: `${node}/register-and-broadcast-node`,
+            method: 'POST',
+            body: { newNodeUrl: `http://localhost:${port}`},
+            json: true
+        };
+        regNodesPromises.push(rp(requestOptions));
+    })
+    Promise.all(regNodesPromises)
+    .then((response)=>{
+        console.log(response);
+        res.sendStatus(201);
+    })
+})
 
 app.listen(port, ()=>{
     console.log('listening on port', port);
 });
+

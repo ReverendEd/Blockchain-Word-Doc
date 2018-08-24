@@ -16,13 +16,14 @@ class ProjectList extends Component {
       console.log(this.props.document.document);
       this.props.dispatch({type: 'EDIT_DOC', payload: this.props.document})
       cookies.set('document', this.props.document.document)
+      cookies.set('title', this.props.document.title)
       this.props.history.push('/editor')
       
   }
 
   render() {
     return (
-      <li onClick={()=>this.openEditorWithFile(this.props.document.document)}>
+      <li onClick={()=>this.openEditorWithFile()}>
           {this.props.document.title}
       </li>
     );

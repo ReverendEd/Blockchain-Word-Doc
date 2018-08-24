@@ -1,5 +1,9 @@
 body {
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background-color: rgb(44, 44, 44);
+  height: 70px;
+  padding: 20px;
+  color: lightgray;
 }
 
 .instructions h1 {
@@ -59,7 +63,7 @@ ul {
     overflow: hidden;
 }
 
-li {
+.horizontal-list{
     float: left;
 }
 
@@ -77,3 +81,4 @@ li a:hover {
     text-decoration: underline;
     color: #eee;
 }
+

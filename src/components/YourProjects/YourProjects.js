@@ -4,8 +4,11 @@ import axios from 'axios';
 import SHA256 from 'sha256';
 import Cookies from 'universal-cookie';
 import ProjectList from './ProjectList/ProjectList';
-
 import Nav from '../../components/Nav/Nav';
+const rp = require('request-promise');
+
+
+
 
 // import { triggerLogout } from '../../redux/actions/Actions';
 
@@ -28,21 +31,50 @@ class UserPage extends Component {
 
   key = SHA256(this.props.user.Reducer.user.username + this.props.user.Reducer.user.password) ;
 
-  componentDidMount() {
 
+  componentWillMount(){
+    
+
+  }
+
+  componentDidMount() {
+    // axios({
+    //   url: '/port',
+    //   method: 'GET'
+    // })
+    // .then((response)=>{
+    //   console.log(response);
+      
+    // })
+    // .catch((error)=>{
+    //   console.log(error);
+    // })
     axios({
-      url: `/documents/${cookies.get('key')}`,
+      url: '/on-load',
       method: 'GET'
     })
     .then((response)=>{
-      console.log(response);
-      this.setState({
-        documents:[
-        ...response.data.documents
-        ]
+      axios({
+        url: '/consensus',
+        method: 'GET',
       })
-      console.log(this.state);
-      
+      .then((response)=>{
+        console.log(response);
+        axios({
+          url: `/documents/${cookies.get('key')}`,
+          method: 'GET'
+        })
+        .then((response)=>{
+          console.log(response);
+          this.setState({
+            documents:[
+            ...response.data.documents
+            ]
+          })
+          console.log(this.state);
+          
+        })
+      })
     })
   }
 
@@ -55,6 +87,7 @@ class UserPage extends Component {
 
   openNewDocument(){
     cookies.set('document', ' ');
+    cookies.set('title', ' ');
     this.props.history.push('/editor');
   }
 
@@ -62,7 +95,7 @@ class UserPage extends Component {
 
     return (
       <div>
-        <Nav />
+        <Nav openNewDocument={this.openNewDocument}/>
         <div>
           <h1
             id="welcome"
@@ -73,7 +106,7 @@ class UserPage extends Component {
           <button
             onClick={()=>this.openNewDocument()}
           >
-            Editor
+            New Project
           </button>
           <button
             onClick={this.logout}

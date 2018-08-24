@@ -50,7 +50,7 @@ class Block {
 class Blockchain {
     constructor() {
         this.chain = [this.createGenesisBlock()];
-        this.difficulty = 4;
+        this.difficulty = 0;
         this.miningReward = 100;
         this.pendingTransactions = [];
         this.pendingDocuments = [];
@@ -160,9 +160,9 @@ class Blockchain {
     //     return documents;
     // }
 
-    getBlock(blockHash){
+    getBlock(blockHash) {
         let correctBlock = null;
-        this.chain.forEach(block=>{
+        this.chain.forEach(block => {
             if (block.hash === blockHash) {
                 correctBlock = block;
                 return correctBlock
@@ -171,11 +171,11 @@ class Blockchain {
         return correctBlock;
     };
 
-    getTransaction(transactionId){
+    getTransaction(transactionId) {
         let correctTransaction = null;
         let correctBlock = null;
-        this.chain.forEach(block=>{
-            block.transactions.forEach(transaction=>{
+        this.chain.forEach(block => {
+            block.transactions.forEach(transaction => {
                 if (transaction.transactionId === transactionId) {
                     correctTransaction = transaction;
                     correctBlock = block
@@ -192,11 +192,11 @@ class Blockchain {
         };
     };
 
-    getDocuments(ownerId){
+    getDocuments(ownerId) {
         let documentList = [];
         let blockList = [];
-        this.chain.forEach(block=>{
-            block.documents.forEach(document=>{
+        this.chain.forEach(block => {
+            block.documents.forEach(document => {
                 if (document.owner === ownerId) {
                     documentList.push(document)
                     blockList.push(block)
@@ -208,6 +208,24 @@ class Blockchain {
                 };
             });
         });
+        if (documentList.length !== 0) {
+            console.log('hi i am', documentList);
+            documentList.sort(function (a, b) {
+                let nameA = a.title.toUpperCase(); // ignore upper and lowercase
+                let nameB = b.title.toUpperCase(); // ignore upper and lowercase
+                if (nameA < nameB) {
+                    return -1;
+                }
+                if (nameA > nameB) {
+                    return 1;
+                }
+            })
+            return {
+                note: 'documents retrieved',
+                documentList: this.packageDocuments(documentList),
+                blockList: blockList
+            };
+        }
         return {
             note: 'documents retrieved',
             documentList: documentList,
@@ -215,17 +233,40 @@ class Blockchain {
         };
     };
 
-    getAddressData(address){
+    packageDocuments(documentList){
+        console.log('this is the', documentList);
+        let processedList = []
+        let tempArray = []
+        for (let i = 0; i < documentList.length; i++) {
+            let now = documentList[i]
+            if (i === 0) {
+                tempArray.push(now)                
+            }
+            let nownow = tempArray[0];
+            if (now.title === nownow.title) {
+                tempArray.push(now)
+            }
+            if (now.title != nownow.title) {
+                processedList.push(tempArray);
+                tempArray = []
+                tempArray.push(now)
+            } 
+        }
+        processedList.push(tempArray)
+        return processedList;
+    }
+
+    getAddressData(address) {
         const addressTransactions = [];
-        this.chain.forEach(block=>{
-            block.transactions.forEach(transaction=>{
+        this.chain.forEach(block => {
+            block.transactions.forEach(transaction => {
                 if (transaction.sender === address || transaction.recipient === address) {
                     addressTransactions.push(transaction);
                 };
             });
         });
         let balance = 0;
-        addressTransactions.forEach(transaction=>{
+        addressTransactions.forEach(transaction => {
             if (transaction.recipient === address) {
                 balance += transaction.amount;
             }
@@ -238,7 +279,7 @@ class Blockchain {
             addressBalance: balance
         };
     };
-    
+
 };
 
 module.exports = Blockchain;

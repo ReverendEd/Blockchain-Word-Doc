@@ -16,6 +16,7 @@ class Quill extends Component {
     constructor(props) {
       super(props)
       this.state = { 
+        title: cookies.get('title'),
         text: cookies.get('document') 
       }
       this.handleChange = this.handleChange.bind(this)
@@ -35,12 +36,13 @@ class Quill extends Component {
       // }
       // this.props.dispatch({type: 'EDIT_DOC', payload: document})
       cookies.set('document', this.state.text, [])
+      cookies.set('title', this.props.title, [])
       axios({
         url: '/document/broadcast',
         method: 'POST',
         data:{
           owner: cookies.get('key'),
-          title: 'title',
+          title: this.props.title,
           document: this.state.text
         }
       })
@@ -56,10 +58,10 @@ class Quill extends Component {
     render() {
       return (
         <div className="quill-div">
-            <ReactQuill value={this.state.text} onChange={this.handleChange} />
             <button onClick={()=> this.save()}>
                 Save
             </button>
+            <ReactQuill id="editor-container" value={this.state.text} onChange={this.handleChange} />
         </div>
       )
     }

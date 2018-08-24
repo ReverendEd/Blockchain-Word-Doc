@@ -1,33 +1,43 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import Quill from './Quill/Quill'
+import Cookies from 'universal-cookie';
 
 import Nav from '../../components/Nav/Nav';
 
+const cookies = new Cookies();
 
 const mapStateToProps = state => ({
   state
 });
 
 class Editor extends Component {
-  componentDidMount() {
+  constructor(props){
+    super(props)
+
+    this.state = {
+      title: cookies.get('title')
+    }
   }
 
-  // logout = () => {
-  //   //this.props.dispatch(triggerLogout());
-  //   this.props.history.push('/home');
-  // }
+  componentDidMount() {
+
+  }
+
+  handleTitle(event){
+    this.setState({
+      title: event.target.value
+    })
+  }
 
   render() {
-    console.log(this.props.state);
     
-
     return (
       <div>
         <Nav />
         <div>
-          <p>hi this is an editor</p>
-          <Quill save={this.save} doc={this.props.state.Reducer.document}/>
+          <input placeholder="Insert Title" onChange={(e)=>this.handleTitle(e)} value={this.state.title}/>
+          <Quill  title={this.state.title} save={this.save} doc={this.props.state.Reducer.document}/>
         </div>
       </div>
     );
