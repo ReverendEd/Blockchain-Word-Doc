@@ -3,6 +3,11 @@ import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
 import SHA256 from 'sha256';
 import Cookies from 'universal-cookie';
+import Header from '../Header/Header'
+import Form from '@material-ui/core/FormGroup'
+import Input from '@material-ui/core/Input'
+import Button from '@material-ui/core/Button'
+import swal from 'sweetalert';
 
 const cookies = new Cookies();
 
@@ -22,22 +27,25 @@ class LoginPage extends Component {
   }
 
   componentDidMount() {
-
+    cookies.set('key', 'guest')
+    cookies.set('username', 'guest')
+    cookies.set('title', '')
+    cookies.set('document', '')
   }
 
   login = (event) => {
     event.preventDefault();
 
     if (this.state.username === '' || this.state.password === '') {
-      alert('fill out your login information')
+      swal('Fill out your Login information.')
     } else {
       let info = {
         username: this.state.username,
         password: SHA256(this.state.password)
       }
-      cookies.set('key', SHA256(this.state.username+this.state.password), []);
+      cookies.set('key', SHA256(this.state.username + this.state.password), []);
       cookies.set('username', this.state.username, []);
-      this.props.dispatch({type: 'LOGIN', payload: info});
+      this.props.dispatch({ type: 'LOGIN', payload: info });
       this.props.history.push('/yourprojects')
     }
   }
@@ -52,31 +60,34 @@ class LoginPage extends Component {
     });
   }
 
-  handleTryIt = ()=>{
-    alert('any documents made while trying this app out will be public to anyone else trying this app.')
-    this.props.dispatch({type: 'LOGIN', payload: {username: 'guest', password: 'guest'}});
+  handleTryIt = () => {
+    swal('Any documents made on "guest" will be public to anyone else also trying this app.')
+    cookies.set('key', 'guest', []);
+    cookies.set('username', 'guest', []);
+    this.props.dispatch({ type: 'LOGIN', payload: { username: 'guest', password: 'guest' } });
     this.props.history.push('/yourprojects')
   }
 
   render() {
     return (
       <div>
+        <Header title="Project Base" />
         <form onSubmit={this.login}>
-          <h1>Login/Register</h1>
+          <h2>Login/Register</h2>
           <div>
             <label htmlFor="username">
-              <input
+              <Input
                 type="text"
                 name="username"
                 value={this.state.username}
-                placeholder="Email Address"
+                placeholder="Username"
                 onChange={this.handleInputChange}
               />
             </label>
           </div>
           <div>
             <label htmlFor="password">
-              <input
+              <Input
                 type="password"
                 name="password"
                 value={this.state.password}
@@ -85,20 +96,27 @@ class LoginPage extends Component {
               />
             </label>
           </div>
-          <div>
-            <input
-              type="submit"
-              name="submit"
-              value="Submit"
-            />
-          </div>
-          <div>
-          <input
+          <div className="button">
+            <Button
+              variant="outlined"
               type="button"
               name="tryItOut"
               value="Try It Out!"
-              onClick={()=>this.handleTryIt()}
-            />
+              onClick={() => this.handleTryIt()}
+              size="small"
+            >
+              Try It Out!
+          </Button>
+            <Button
+              variant="outlined"
+              type="submit"
+              name="submit"
+              value="Submit"
+              onClick={this.login}
+              size="small"
+            >
+              Submit
+            </Button>
           </div>
         </form>
       </div>

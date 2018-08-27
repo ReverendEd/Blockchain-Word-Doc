@@ -5,6 +5,8 @@ import './Quill.css';
 import Cookies from 'universal-cookie';
 import { connect } from 'react-redux';
 import axios from 'axios';
+import Button from '@material-ui/core/Button'
+import swal from 'sweetalert';
 
 const cookies =   new Cookies();
 
@@ -27,6 +29,8 @@ class Quill extends Component {
   
     handleChange(value) {
       this.setState({ text: value })
+      console.log(this.state);
+      cookies.set('document', this.state.text, [])
     }
 
     save(){
@@ -47,7 +51,7 @@ class Quill extends Component {
         }
       })
       .then((response)=>{
-        alert('document saved');
+        swal('document saved');
         axios({
           url: '/mine',
           method: 'GET'
@@ -58,9 +62,9 @@ class Quill extends Component {
     render() {
       return (
         <div className="quill-div">
-            <button onClick={()=> this.save()}>
+            <Button onClick={()=> this.save()} variant="outlined" size="small">
                 Save
-            </button>
+            </Button>
             <ReactQuill id="editor-container" value={this.state.text} onChange={this.handleChange} />
         </div>
       )

@@ -6,7 +6,7 @@ const uuid = require('uuid/v1');
 const port = process.argv[2] ;
 const rp = require('request-promise');
 
-const nodeAddress = uuid().split('-').join('');
+let nodeAddress = '';
 
 const bitcoin = new Blockchain();
 
@@ -20,8 +20,10 @@ const knownNodes = [
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({extended: false}));
 
-app.get('/address', (req, res)=>{
-    res.send(nodeAddress);
+app.post('/address', (req, res)=>{
+    console.log('this is the new address',req.body.key);
+    nodeAddress = req.body.key;
+    res.sendStatus(201);
 })
 
 app.get('/blockchain', (req, res)=>{
@@ -41,7 +43,7 @@ app.post('/transaction', (req, res)=>{
 })
 
 app.post('/transaction/broadcast', function(req, res) {
-	const newTransaction = bitcoin.createTransaction(req.body.amount, req.body.sender, req.body.recipient);
+	const newTransaction = bitcoin.createTransaction(parseInt(req.body.amount), req.body.sender, req.body.recipient);
 	bitcoin.addTransactionToPendingTransactions(newTransaction);
 	const requestPromises = [];
 	bitcoin.networkNodes.forEach(networkNodeUrl => {
@@ -101,6 +103,7 @@ app.get('/mine', (req, res)=>{
 
 	Promise.all(requestPromises)
 	.then(data => {
+        console.log('node address in /mine', nodeAddress);
 		const requestOptions = {
 			uri: bitcoin.currentNodeUrl + '/transaction/broadcast',
 			method: 'POST',

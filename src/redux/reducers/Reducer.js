@@ -36,7 +36,18 @@ const document = (state = defaultDocState, action) => {
           break;     
     }
     return state;
-  };
+};
+
+// const docHistory = (state = [], action)=>{
+//   switch (action.type) {
+//     case 'SAVE_HISTORY':
+//         state = action.payload
+//       break;
+  
+//     default:
+//       break;
+//   }
+// }
 
 // const message = (state = '', action) => {
 //     switch (action.type) {
@@ -66,5 +77,6 @@ const document = (state = defaultDocState, action) => {
 
 export default combineReducers({
   user,
-  document
+  document,
+  //docHistory
 });

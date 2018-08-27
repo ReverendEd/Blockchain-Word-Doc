@@ -1,6 +1,7 @@
 .quill-div{
     height: 200%;
     border: 1px; 
+    margin: 5px;
 }
 
 ReactQuill{
@@ -8,7 +9,11 @@ ReactQuill{
 }
 
 #editor-container {
-    height: 375px;
-    color: 211,211,211
+    height: 500px;
+    color: black;
+    background-color: white;
   }
   
+.ql-container{
+    background-color: white;
+}

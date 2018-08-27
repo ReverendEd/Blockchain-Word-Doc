@@ -14,7 +14,7 @@ class Header extends Component{
   render(){
     return (
       <div>
-        <h1>Insert Name Here</h1>
+        <h1>[Insert Name Here]</h1>
       </div>
     )
   }

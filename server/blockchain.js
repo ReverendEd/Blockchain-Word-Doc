@@ -51,7 +51,7 @@ class Blockchain {
     constructor() {
         this.chain = [this.createGenesisBlock()];
         this.difficulty = 0;
-        this.miningReward = 100;
+        this.miningReward = 10;
         this.pendingTransactions = [];
         this.pendingDocuments = [];
         this.currentNodeUrl = currentNodeUrl;
@@ -268,10 +268,10 @@ class Blockchain {
         let balance = 0;
         addressTransactions.forEach(transaction => {
             if (transaction.recipient === address) {
-                balance += transaction.amount;
+                balance += parseInt(transaction.amount);
             }
             else if (transaction.sender === address) {
-                balance -= transaction.amount;
+                balance -= parseInt(transaction.amount);
             };
         });
         return {

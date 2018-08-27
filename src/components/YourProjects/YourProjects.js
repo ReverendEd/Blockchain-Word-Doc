@@ -5,7 +5,8 @@ import SHA256 from 'sha256';
 import Cookies from 'universal-cookie';
 import ProjectList from './ProjectList/ProjectList';
 import Nav from '../../components/Nav/Nav';
-const rp = require('request-promise');
+import Header from '../Header/Header'
+import Tokens from '../Editor/Tokens/Tokens'
 
 
 
@@ -72,11 +73,22 @@ class UserPage extends Component {
             ]
           })
           console.log(this.state);
-          
+          axios({
+            url: '/address',
+            method: 'POST',
+            data: {
+              key: cookies.get('key')
+            }
+          })
         })
       })
     })
   }
+
+  // myFunction() {
+  //   var element = document.getElementById("myDIV");
+  //   element.classList.add("darktheme");
+  // }
 
   logout = () => {
     cookies.set('key','guest', []);
@@ -94,7 +106,8 @@ class UserPage extends Component {
   render() {
 
     return (
-      <div>
+      <div id="myDIV">
+        <Header title="Project Base" />
         <Nav openNewDocument={this.openNewDocument}/>
         <div>
           <h1
@@ -103,17 +116,8 @@ class UserPage extends Component {
             Welcome, { this.username }
           </h1>
           <ProjectList history={this.props.history} documents={this.state.documents}/>
-          <button
-            onClick={()=>this.openNewDocument()}
-          >
-            New Project
-          </button>
-          <button
-            onClick={this.logout}
-          >
-            Log Out
-          </button>
         </div>
+        <Tokens />
       </div>
     );
   }

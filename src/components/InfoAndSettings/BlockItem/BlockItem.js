@@ -35,7 +35,7 @@ class BlockItem extends Component {
 
         let transactionssArray = this.props.block.transactions.map((transaction, index)=>{
             return(
-                <li key={index}>From: {transaction.sender.substring(0, 4)} To: {transaction.recipient.substring(0, 4)} Amount: {transaction.amount} </li>
+                <li key={index}>From: {transaction.sender.substring(0, 5)} To: {transaction.recipient.substring(0, 5)} Amount: {transaction.amount} </li>
             )
         })
 
@@ -46,8 +46,8 @@ class BlockItem extends Component {
                         <div className="image" >
                             <p>Previous Hash: {this.props.block.previousHash.substring(0, 3)}</p>
                             <p>Hash: {this.props.block.hash.substring(0,3)}</p>                 
-                            <button onClick={() =>this.handleClick('documents')}>{this.props.block.documents.length} Documents</button> 
-                            <button onClick={() =>this.handleClick('transactions')}>{this.props.block.transactions.length} Transactions</button> 
+                            <Button variant="contained" color="grey" onClick={() =>this.handleClick('documents')}>{this.props.block.documents.length} Documents</Button> 
+                            <Button variant="contained" color="grey" onClick={() =>this.handleClick('transactions')}>{this.props.block.transactions.length} Transactions</Button> 
                         </div>
                 )
             }          

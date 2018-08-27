@@ -35,6 +35,8 @@
     "request": "^2.88.0",
     "request-promise": "^4.2.2",
     "sha256": "^0.2.0",
+    "sweetalert": "^2.1.0",
+    "sweetalert-react": "^0.4.11",
     "universal-cookie": "^3.0.3",
     "uuid": "^3.3.2"
   },
@@ -45,7 +47,7 @@
     "build": "react-scripts build",
     "test": "react-scripts test --env=jsdom",
     "eject": "react-scripts eject",
-    "node_1": "nodemon --watch dev -e js server/server.js 5000 http://localhost:5000",
+    "node_1": "nodemon --watch dev -e js server/server.1.js 5000 http://localhost:5000",
     "node_2": "nodemon --watch dev -e js server/server.js 3002 http://localhost:3002",
     "node_3": "nodemon --watch dev -e js server/server.js 3003 http://localhost:3003",
     "node_4": "nodemon --watch dev -e js server/server.js 3004 http://localhost:3004",
