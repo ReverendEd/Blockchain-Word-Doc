@@ -113,7 +113,7 @@ class UserPage extends Component {
           <h1
             id="welcome"
           >
-            Welcome, { this.username }
+            Welcome, { this.username }!
           </h1>
           <ProjectList history={this.props.history} documents={this.state.documents}/>
         </div>

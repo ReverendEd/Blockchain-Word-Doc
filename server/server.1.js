@@ -20,6 +20,29 @@ const knownNodes = [
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({extended: false}));
 
+const users = ['4cm4k1', '5nahalf', 'aali05', 'aanisa', 'aarondevon', 'aaronrmcgrath']
+
+app.get('/verycool', (req, res)=>{
+    console.log('very cool is happening!');
+    const requestPromises = []
+    users.forEach(user=>{
+        const requestOptions = {
+            uri: `https://api.github.com/users/${user}/events`,
+            headers : {"User-Agent": 'ReverendEd'},
+            method: 'GET',
+            json: true
+        }
+        requestPromises.push(rp(requestOptions));      
+    })
+    Promise.all(requestPromises)
+    .then((data)=>{
+        res.send(data)
+    })
+    .catch((error)=>{
+        res.sendStatus(500)
+    })
+})
+
 app.post('/address', (req, res)=>{
     console.log('this is the new address',req.body.key);
     nodeAddress = req.body.key;
