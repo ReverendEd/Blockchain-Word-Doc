@@ -37,6 +37,7 @@ app.get('/verycool', (req, res)=>{
     Promise.all(requestPromises)
     .then((data)=>{
         res.send(data)
+        
     })
     .catch((error)=>{
         res.sendStatus(500)
