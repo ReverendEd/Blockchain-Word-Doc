@@ -133,6 +133,7 @@ class Tokens extends Component {
         return (
             <div  className="widget">
                 {content}
+            
             </div>
         );
     }
