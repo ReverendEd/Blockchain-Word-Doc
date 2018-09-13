@@ -52,7 +52,7 @@ class ProjectList extends Component {
         let historyList;
 
         if (this.state.showHistory) {
-            
+
             historyList = this.props.historyList.map((document, index) => {
                 console.log(document);
                 return (
@@ -61,6 +61,7 @@ class ProjectList extends Component {
             })
         }
 
+        
         return (
             <Table className="center">
                 <TableCell><h3>{this.props.document.title}</h3></TableCell>
