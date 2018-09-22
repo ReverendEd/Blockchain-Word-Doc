@@ -58,6 +58,7 @@ class Blockchain {
         this.networkNodes = [];
     }
 
+    
     createGenesisBlock() {
         return new Block(0, [], [], '0')
     }
